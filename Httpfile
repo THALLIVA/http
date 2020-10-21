@@ -8,12 +8,31 @@ Future<String> postWithClientCertificate() async {
   var response = await request.close();
   String reply = await response.transform(utf8.decoder).join();
   print(reply);
-  //DetailsModel details = DetailsModel.fromJson(response);
   final Map response1 = json.decode(response);
+  DetailsModel details = DetailsModel.fromJson(response1);
   
+  return details.token;
+}
 
-  print(response.statusCode);
-  var token = response.headers.value('paymentrequesttoken');
-  //print(reply);
-  return token;
+
+class DetailsModel {
+  String url;
+  String token;
+  String id;
+
+  DetailsModel({this.url, this.token, this.id});
+
+  DetailsModel.fromJson(Map<String, dynamic> json) {
+    url = json['url'];
+    token = json['token'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['url'] = this.url;
+    data['token'] = this.token;
+    data['id'] = this.id;
+    return data;
+  }
 }
